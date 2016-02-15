@@ -1,0 +1,154 @@
+doctype html
+html(ng-app="EmergencySocialNetwork")
+	head
+		include ./includes/head.jade
+		link(type="text/css" rel="stylesheet" href="/components/formstone/dist/css/navigation.css")
+		link(type="text/css" rel="stylesheet" href="/stylesheets/home.css")
+
+	body(ng-controller="MainCtrl")
+		nav.navbar.navbar-default.navbar-fixed-top
+			.container-fluid
+				a#menu_toggle.navbar-brand(href="javascript: void(0)")
+					span.glyphicon.glyphicon-menu-hamburger
+					| Menu
+		
+				ul.nav.navbar-nav.navbar-right
+					li#search_button
+						a(href="javascript: void(0)" data-toggle="modal" data-target="#search_modal")
+							span.glyphicon.glyphicon-search
+					li.dropdown
+						a#actions_toggle.dropdown-toggle(href="javascript: void(0)" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false")
+							img.img-circle(src="{{$root.me.image}}" style="width: 20px; height: 20px;")
+							span &nbsp;#{user.username} 
+							span - {{$root.me.privilege}}
+							span#status(ng-show="$root.me.lastStatusCode") &nbsp;({{$root.me.lastStatusCode}})
+							span.caret
+						ul.dropdown-menu.dropdown-menu-right
+							li
+								a(href="javascript: void(0)" data-toggle="modal" data-target="#status_modal") Change Status
+							li
+								a#profile_link(href="#/profile") My Profile
+							li
+								a(href="/uploadPicture") Update picture
+							li
+								a.logout(href="/user/logout") Log out
+
+		div#search_modal.modal.fade(tabindex="-1" role="dialog" ng-controller="SearchCtrl")
+			div.modal-dialog.modal-lg(role="document")
+				div.modal-content
+					div.modal-body
+						button.close(type="button" data-dismiss="modal" aria-label="Close")
+							span(aria-hidden="true") &times;
+						div.input-group
+							input#search_pattern(type="text" class="form-control" placeholder="Search for...")
+							div.input-group-btn
+								button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Type&nbsp;
+									span.caret
+								ul#search_types.dropdown-menu.dropdown-menu-right
+									li
+										a(href="javascript: void(0)" data-search="users_username") Users (by username)
+									li
+										a(href="javascript: void(0)" data-search="users_statusType") Users (by status)
+									li
+										a(href="javascript: void(0)" data-search="announcements") Announcements
+									li
+										a(href="javascript: void(0)" data-search="publicMessages") Public Messages
+									li
+										a(href="javascript: void(0)" data-search="privateMessages") Private Messages
+									li.divider(role="separator")
+									li
+										a(href="javascript: void(0)" data-search="all") Everything
+						div.search_result
+							div.users
+								h4
+									a(href="#/directory") Users
+								div.list-group
+									a.list-group-item.view-animate-container(ng-repeat="(username, user) in result.users | orderBy: username" ng-if="$root.my_username !== username" class="list-group-item-{{user.color}}" href="#/chat/{{username}}")
+										span.glyphicon(class="{{user.statusIcon}}")
+										| {{username}}
+
+							div.announcements
+								h4
+									a(href="#/welcome") Announcement
+								div.list-group
+									div.list-group-item.view-animate-container(ng-repeat="announcement in result.announcements | orderBy: postedAt:true") {{announcement.content}}
+										div.pull-right {{announcement.author}}, {{announcement.postedAt_s}}
+							div.publicMessages
+								h4
+									a(href="#/chat/public") Public Messages
+								div.list-group
+									div.list-group-item.view-animate-container(ng-repeat="msg in result.publicMessages | orderBy: postedAt:true") {{msg.content}}
+										div.pull-right {{msg.author}}, {{msg.postedAt_s}}
+							div.privateMessages
+								h4 Private Messages
+								div.list-group
+									div.list-group-item.view-animate-container(ng-repeat="msg in result.privateMessages | orderBy: postedAt:true") {{msg.content}}
+										div.pull-right {{msg.author}}, {{msg.postedAt_s}}
+
+		div#status_modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="statusModalTitle")
+			div.modal-dialog(role="document")
+				div.modal-content
+					div.modal-header
+						button.close(type="button" data-dismiss="modal" aria-label="Close")
+							span(aria-hidden="true") &times;
+						h4.modal-title#statusModalTitle Share Status
+					div.modal-body
+						div.jumbotron(ng-repeat="statusType in statusTypes" on-status-item-render)
+							a.btn.btn-lg(class="btn-{{statusType.color}}" href="javascript: void(0)" data-title="{{statusType.title}}" data-dismiss="modal")
+								span.glyphicon(aria-hidden="true" class="{{statusType.icon}} {{statusType.textColor}}")
+								span {{statusType.title}}
+							p {{statusType.desc}}
+					div.modal-footer
+						button.btn.btn-default(type="button" data-dismiss="modal") Cancel
+
+		button#real_menu_toggle(style="display: none;")
+		.container-fluid
+			.row
+				div#people_menu.col-sm-3.people_drawer(data-navigation-handle="#real_menu_toggle" data-navigation-content="#content")
+					div.list-group
+						a.list-group-item(href="#/welcome") Home
+						a.list-group-item(href="#/directory") Directory
+						a.list-group-item(href="#/chat/public") Public Chat
+							span.badge
+					h4
+						span.glyphicon.glyphicon-comment(aria-hidden="true")
+						| Private Chat
+					div.list-group
+						em Online Users
+						a.list-group-item.view-animate-container(class="list-group-item" href="#/chat/{{$root.me.username}}")
+							span.glyphicon.glyphicon-chevron-right(aria-hidden="true")
+							| Just You
+						a.list-group-item.view-animate-container(ng-repeat="user in users | orderBy: 'username'" ng-if="$root.my_username !== user.username && user.login" class="list-group-item-{{user.color}}" href="#/chat/{{user.username}}")
+							img.img-circle(src="{{user.image}}", height='35', width='35')
+							span.glyphicon(class="{{user.statusIcon}}")
+							| {{user.username}}
+							span.badge
+						em Offline Users
+						a.list-group-item.view-animate-container(ng-repeat="user in users | orderBy: 'username'" ng-if="$root.my_username !== user.username && !user.login" class="list-group-item-{{user.color}}" href="#/chat/{{user.username}}")
+							img.img-circle(src="{{user.image}}", height='35', width='35')
+							span.glyphicon(class="{{user.statusIcon}}")
+							| {{user.username}}
+							span.badge
+					if user.privilege === 'Monitor' || user.privilege === 'Admin'
+						h4
+							span.glyphicon.glyphicon-stats(aria-hidden="true")
+							| Monitor
+						div.list-group
+							a.list-group-item(href="#/monitor/performance") Measure Performance
+
+				div#content.col-sm-9.col-xs-12
+					input#name(type="hidden" value="#{user.username}")
+					div.view-animate(ng-view)
+
+		include includes/tail.jade
+		script(type="text/javascript" src="/components/formstone/dist/js/core.js")
+		script(type="text/javascript" src="/components/formstone/dist/js/mediaquery.js")
+		script(type="text/javascript" src="/components/formstone/dist/js/swap.js")
+		script(type="text/javascript" src="/components/formstone/dist/js/navigation.js")
+		script(type="text/javascript" src="/components/angular/angular.js")
+		script(type="text/javascript" src="/components/angular-route/angular-route.js")
+		script(type="text/javascript" src="/components/angular-animate/angular-animate.js")
+		script(type="text/javascript" src="/socket.io/socket.io.js")
+		script(type="text/javascript" src="/javascripts/home.js")
+		if user.privilege === 'Monitor' || user.privilege === 'Admin'
+			script(type="text/javascript" src="/javascripts/monitor.js")

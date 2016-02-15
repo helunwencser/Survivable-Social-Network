@@ -1,0 +1,64 @@
+div.row
+	div.col-md-8.col-md-offset-2.people-list
+		div.media.view-animate-container(ng-repeat="user in users | orderBy: 'username'")
+			div.media-left.media-middle
+				div.media-object
+					img.profile-photo.img-circle(src="{{user.image}}")
+			div.media-body
+				div.media-heading(class="text-{{user.color}}")
+					span.glyphicon(class="{{user.statusIcon}}")
+					| {{user.username}}
+					span(ng-show="user.lastStatusCode") &nbsp;(Status: {{user.lastStatusCode}})
+					a(href="#/chat/{{user.username}}" title="Chat with {{user.username}}")
+						span.glyphicon.glyphicon-comment(aria-hidden="true")
+					if user.privilege === 'Admin'
+						a.profile_modal_toggle(href="javascript: void(0)" title="Administer User {{user.username}}" data-toggle="modal" data-target="#profile_modal" data-user="{{user.username}}")
+							span.glyphicon.glyphicon-edit(aria-hidden="true")
+				div(ng-show="user.firstname || user.lastname")
+					b Real Name:&nbsp;
+					| {{user.firstname}} {{user.lastname}}
+				div(ng-show="user.location")
+					b Location:&nbsp;
+					| {{user.location}}
+				div(ng-show="user.coordinate")
+					b Coordinate:&nbsp;
+					| {{user.latitude}}, {{user.longitude}}&nbsp;
+					span(ng-show="$root.me.coordinate")
+					| ({{user.distance}} miles away)
+				div(ng-show="user.peopleiknow")
+					b People the citizen knows:&nbsp;
+					| {{user.peopleiknow}}
+
+div#profile_modal.modal.fade(tabindex="-1" role="dialog" ng-controller="SearchCtrl")
+	div.modal-dialog(role="document")
+		div.modal-content
+			div.modal-header
+				button.close(type="button" data-dismiss="modal" aria-label="Close")
+					span(aria-hidden="true") &times;
+				h4.modal-title Edit User&nbsp;
+					b#username_to_edit
+			div.modal-body
+				form(name="profile")
+					div.form-group
+						label(for="newUsername") Username
+						input#newUsername.form-control(name="username")
+					label Account Status:
+					br
+					div.btn-group(data-toggle="buttons" style="margin-bottom: 0.5em")
+						label.btn.btn-default(style="font-weight: initial" for="radioActive")
+							input#radioActive(name="accountStatus" type="radio" value="Active")
+							| &nbsp;Active
+						label.btn.btn-default(style="font-weight: initial" for="radioInactive")
+							input#radioInactive(name="accountStatus" type="radio" value="Inactive")
+							| &nbsp;Inactive
+					div.form-group
+						label(for="newPassword") New Password
+						input#newPassword.form-control(type="password" name="password" value="")
+					div.form-group
+						label(for="privilege") Privilege
+						select#privilege.form-control(name="privilege")
+							option(value="Citizen") Citizen
+							option(value="Coordinator") Coordinator
+							option(value="Monitor") Monitor
+							option(value="Admin") Admin
+					button#administerProfileBtn.btn.btn-primary.form-control(type="submit") Save

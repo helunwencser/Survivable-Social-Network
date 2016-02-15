@@ -1,0 +1,94 @@
+msg_input_height = 34px
+navbar_height = 60px
+
+body
+	padding-top navbar_height
+
+h2.title
+	margin-bottom 1em
+
+nav.navbar
+	> div.container-fluid
+		padding-left 0px
+		margin-left 0px
+		ul.nav.navbar-nav.navbar-right
+			float right
+			> li, > li > a
+				display inline-block
+			#search_button
+				vertical-align top
+				a
+					padding-left 5px
+					padding-right @padding-left
+			#actions_toggle
+				padding-left 5px
+				padding-right @padding-left
+
+#menu_toggle
+	padding-left 0px
+	margin-left 0px
+
+span.glyphicon, span.caret
+	margin-left 5px
+	margin-right @margin-left
+
+.view-animate.ng-leave
+	position absolute
+
+#modal_name label[for="name_input"]
+	left 0
+
+#messages
+	list-style-type none
+
+#messages > .bg-info
+	margin-bottom 5px
+	padding 5px 10px
+	border-radius 4px
+	background-color #f5f5f5
+
+#messages > .bg-info.me
+	background #c7defe
+
+#messages > .bg-info h5
+	font-size 1.4em
+
+#messages > .bg-info h5 small
+	font-size 65%
+
+form.msg_input
+	text-align center
+	background-color #e3e3e3
+	display block
+	> div
+		padding 0
+
+div.people_drawer
+	padding-left 0px
+	padding-right @padding-left
+
+.people_drawer.fs-navigation-enabled
+	padding-top navbar_height
+	padding-bottom navbar_height
+
+.people_drawer.fs-navigation-element.fs-navigation-enabled
+	width 180px
+
+#status_modal .jumbotron
+	padding-left 20px
+	padding-right @padding-left
+	
+	p
+		margin-top 10px
+
+#search_modal
+	button.close
+		font-size 34px
+	.input-group
+		padding-right 10px
+	div.search_result
+		display none
+
+.profile-photo
+	width 64px
+	height 64px

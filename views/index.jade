@@ -1,0 +1,43 @@
+doctype html
+html
+	head
+		include ./includes/head.jade
+		link(type="text/css" rel="stylesheet" href="/stylesheets/index.css")
+
+	body(style="display: none")
+		.container
+			.row
+				.col-md-offset-3.col-md-6
+					h1(style="text-align: center") Emergency Social Network
+					img(src='logo.png', alt='*', style='width:120px;height:120px;display:block;margin:auto;')
+					hr
+					h2.hint(style="text-align: center") Sign up
+					if info
+						div.alert.alert-info.alert-dismissible(aria-label="Close") !{info}
+							button.close(type="button" data-dismiss="alert" aria-label="Close")
+								span(aria-hidden="true") &times;
+					if error
+						div.error_msg(style="display: none") !{error}
+					else
+						div.error_msg(style="display: none")
+					form(method="post")
+						.form-group
+							input.form-control#username(name="username", placeholder="Username")
+						.form-group
+							input.form-control#password(name="password", type="password", placeholder="Password")
+						.form-group.signup
+							input.form-control#password2(name="password2", type="password", placeholder="Confirm Password")
+						.form-group
+							button.btn.btn-primary.btn-block#submit(type="submit")
+								span.glyphicon.glyphicon-user
+								span Sign up
+					.hint
+						.login
+							span Already registered?&nbsp;
+								a(href="/#login") Log in
+						.signup(style="display: none")
+							span New user?&nbsp;
+								a(href="/#signup") Sign up
+		
+		include includes/tail.jade
+		script(type="text/javascript" src="/javascripts/index.js")

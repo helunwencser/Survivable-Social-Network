@@ -1,0 +1,44 @@
+.row
+	.col-sm-offset-1.col-sm-10.col-md-offset-2.col-md-8.view-animate-container(style='margin-bottom: 1em;')
+		form(name="profile")
+			.row
+				.col-sm-6
+					div.form-group
+						label Username
+						#username {{$root.me.username}}
+				.col-sm-6
+					div.form-group
+						label Status:
+						span#statusCode &nbsp;{{$root.me.lastStatusCode}}
+						br
+						a#changeStatusBtn.btn.btn-default(href="javascript: void(0)" data-toggle="modal" data-target="#status_modal") Change
+			.row
+				.col-sm-6
+					div.form-group
+						label(for="firstname") First Name
+						input#firstname.form-control(name="firstname" value="{{$root.me.firstname}}")
+				.col-sm-6
+					div.form-group
+						label(for="lastname") Last Name
+						input#lastname.form-control(name="lastname" value="{{$root.me.lastname}}")
+			div.form-group
+				label(for="location") Location
+				input#location.form-control(name="location" value="{{$root.me.location}}")
+			div.form-group
+				label Geographic Coordinate
+				#coordinate {{$root.me.coordinate}}
+				a#getCoordinate.btn.btn-default(href="javascript: void(0)") Use my device location
+				| &nbsp;
+				a#inputCoordinate.btn.btn-default(href="javascript: void(0)") Manual Input
+			div.form-group
+				label(for="peopleiknow") People I know
+				select#peopleiknow.form-control(name="peopleiknow" multiple)
+					option(ng-repeat="user in users | orderBy: 'username'" ng-if="$root.my_username !== user.username" ng-selected="$root.me.peopleiknow_arr.indexOf(user.username) >= 0") {{user.username}}
+			hr
+			div.form-group
+				label Created at
+				#createdAt {{$root.me.createdAt_local}}
+			div.form-group
+				label Last login
+				#lastLoginAt {{$root.me.lastLoginAt_local}}
+			button#saveProfileBtn.btn.btn-primary.form-control(type="submit") Save

@@ -1,0 +1,32 @@
+# unnecessary Node.JS files
+node_modules/
+npm-debug.log
+
+# Databases
+#SSNocDB.db
+#SSNocDBTest.db
+
+# vim undo file and swap file
+*.un~
+*.swp
+
+# Compiled CSS
+*.css
+
+# test file
+testCharCtrl.js
+
+# files created by Bower
+public/components/
+
+# files created by grunt and mocha
+coverage/
+
+# shippable files
+shippable/
+
+# Intellij files 
+.idea/
+
+# Temp folder
+temp/

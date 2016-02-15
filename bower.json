@@ -1,0 +1,38 @@
+{
+  "name": "SSNoC",
+  "description": "Emergency Social Network Application",
+  "main": "app.js",
+  "authors": [
+    "Social Coders (FSE-F15)"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "emergency",
+    "social",
+    "network",
+    "node.js",
+    "web",
+    "mobile"
+  ],
+  "homepage": "https://github.com/cmusv-fse/FSE-F15-SSNoC-SA2-Social-Coders",
+  "moduleType": [
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "formstone": "~0.8.23",
+    "bootstrap": "~3.3.5",
+    "toastr": "~2.1.2",
+    "angular": "~1.4.7",
+    "angular-animate": "~1.4.7",
+    "angular-route": "~1.4.7"
+  }
+}

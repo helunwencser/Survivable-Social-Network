@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    include ./includes/head.jade
+    script(src='http://code.jquery.com/jquery-1.11.0.min.js')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+    title Upload picture
+  body
+    .container-fluid
+      h2#user #{username}   
+      h1 Upload a picture
+      input(type='button', onclick="location.href='/#home'", value='Skip this step')
+      br
+      br
+      section.container-fluid
+        p
+          input#take-picture(type='file', accept='image/*;capture=camera', style='display:inline')          
+        h2 Preview:
+        p
+          img.img-circle#show-picture(src='noImage.jpg', alt='', height='200', width='200')
+          br
+          br
+          input#upload(type='button', onclick="location.href='/#home'", value='Upload')
+              
+        p#error
+    script(src='/javascripts/base.js')

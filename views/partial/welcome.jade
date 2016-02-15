@@ -1,0 +1,23 @@
+h1(style="text-align: center") Emergency Social Network
+hr
+h2(style="text-align: center") Announcements
+.row
+	if user.privilege === 'Coordinator' || user.privilege === 'Admin'
+		form.announcement_input(action="")
+			.col-md-offset-2.col-md-8
+				textarea.form-control.resizable(rows="3")
+			.col-md-offset-4.col-md-4(style="margin-top: 1em; margin-bottom: 1em;")
+				button.btn.btn-block.btn-success(type="submit")
+					span.glyphicon.glyphicon-send
+					| &nbsp;Post
+
+	.col-md-offset-2.col-md-8(ng-show="announcements.length===0" style="text-align: center")
+		| There are no announcements.
+	.col-md-offset-2.col-md-8
+		.panel.panel-primary(ng-repeat="announcement in announcements | orderBy: postedAt : true")
+			.panel-heading
+				h3.panel-title(style="display: inline-block")
+					img.img-circle(src="/user/picture/{{announcement.author}}" style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;")
+					| {{announcement.author}}
+				.pull-right {{announcement.postedAt_s}}
+			.panel-body(ng-bind-html="announcement.content")

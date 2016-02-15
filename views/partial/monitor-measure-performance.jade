@@ -1,0 +1,17 @@
+h2(style="text-align: center") Measure Performance
+div.container-fluid
+	form.measure_performance
+		div.form-group
+			label(for="duration") Duration (Seconds)
+			input#test_duration.form-control(type="text" aria-label="Duration" placeholder="10")
+		button#start_test_btn.btn.btn-lg.btn-info(type="submit") Start
+		button#end_test_btn.btn.btn-lg.btn-warning(type="button") Stop
+	br
+	div.progress
+		div#test_progress.progress-bar(role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;") 0%
+	h3 Results
+	div.result
+		p GET Success: {{result.get_success}}
+		p GET Failure: {{result.get_failure}}
+		p POST Success: {{result.post_success}}
+		p POST Failure: {{result.post_failure}}
